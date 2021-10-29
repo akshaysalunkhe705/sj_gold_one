@@ -1,0 +1,25 @@
+DB CHANGES 
+    user table
+        pancard - number with photo
+        adharcard - number with photo
+        photo
+        primary number verified
+        email verified
+
+    gold on emi scheme
+        initial amount percent
+        interest rate percent
+        scheme type [sip, gold on emi]
+
+    user gold on emi scheme
+        gold_amount
+
+
+    payments 
+        emai on date
+        -- add all the payment cycle and initial payment in loop
+
+FEATURES
+    1. LOGIN with GOOGLD or FB
+    2. SIP scheme
+    3. GOLD on EMI user scheme cancel
