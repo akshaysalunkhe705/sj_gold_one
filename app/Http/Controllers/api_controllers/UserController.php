@@ -1,15 +1,32 @@
 <?php
 
 namespace App\Http\Controllers\api_controllers;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\models\User;
+use App\Models\UserModel;
+use App\Repository\UserRepository;
 use Illuminate\Support\Facades\Hash;
 // use Illuminate\Support\Facades\Auth;
 // use Laravel\Sanctum\HasApiTokens;
 
 class UserController extends Controller
 {
+    private $user_repository;
+    
+    public function __construct()
+    {
+        $this->user_repository = new UserRepository();
+    }
+
+    public function index()
+    {
+        $user_dataset = $this->user_repository->fetch();
+        return response()->json($user_dataset, 200);
+    }
+
+
     function login(Request $request)
     {
         $user= User::where('email_address', $request->email_address)->first();

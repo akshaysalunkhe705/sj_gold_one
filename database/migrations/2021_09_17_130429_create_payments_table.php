@@ -17,8 +17,11 @@ class CreatePaymentsTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('amount');
+            $table->integer('penalty');
+            $table->string('payment_date');
             $table->string('payment_gateway');
-            $table->enum('payment_status', ['Initialized', 'Cancel', 'Pending', 'Successful', 'failed']);
+            $table->enum('payment_status', ['Initialized', 'Cancel', 'Pending', 'Successful', 'failed'])->default('Initialized');
             $table->set('payment_mode', ['Bank', 'Gold']);
             $table->enum('transaction_type', ['Credit', 'Debit']);
             $table->softDeletes();

@@ -11,8 +11,16 @@ use App\Models\SettingGoldRateModel;
 
 class SettingGoldRateRepository implements BaseRepositoryInterface
 {
+    private $filter;
+    
+    public function __construct()
+    {
+        $this->filter($this->filter);
+    }
+
     public function fetch($pagination=0, $filter=[])
     {
+        $filter = $this->filter($filter);
         $dataSet = SettingGoldRateModel::when($filter['id'], function ($query) use ($filter) {
             $query->where('id', $filter['id']);
         })
@@ -27,7 +35,7 @@ class SettingGoldRateRepository implements BaseRepositoryInterface
         })
         ->orderBy('created_at', 'ASC');
         
-        if ($filter['id'] != null) {
+        if ($dataSet->count()==1) {
             return $dataSet->first();
         }
         return $pagination != 0 ? $dataSet->paginate($pagination) : $dataSet->get();
@@ -52,4 +60,16 @@ class SettingGoldRateRepository implements BaseRepositoryInterface
         return SettingGoldRateModel::where('id', $id)->update($updateValues);
     }
     //
+
+    
+    //-------------------------------------------PRIVATE FUNCTIONS
+    public function filter()
+    {
+        return $this->filter = [
+            'id' => request()->id,
+            'gold_melting_name' => request()->gold_melting_name,
+            'gold_melting_buy_rate' => request()->gold_melting_buy_rate,
+            'gold_melting_sale_rate' => request()->gold_melting_sale_rate
+        ];
+    }
 }

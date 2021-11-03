@@ -10,8 +10,16 @@ use App\Models\UserModel;
 
 class UserRepository implements BaseRepositoryInterface
 {
+    private $filter;
+    
+    public function __construct()
+    {
+        $this->filter($this->filter);
+    }
+
     public function fetch($pagination=0, $filter=[])
     {
+        $filter = $this->filter($filter);
         $dataSet = UserModel::when($filter['id'], function ($query) use ($filter) {
             $query->where('id', $filter['id']);
         })
@@ -59,7 +67,7 @@ class UserRepository implements BaseRepositoryInterface
         })
         ->orderBy('created_at', 'ASC');
         
-        if ($filter['id'] != null) {
+        if ($dataSet->count()==1) {
             return $dataSet->first();
         }
         return $pagination != 0 ? $dataSet->paginate($pagination) : $dataSet->get();
@@ -96,4 +104,28 @@ class UserRepository implements BaseRepositoryInterface
         return UserModel::where('id', $id)->update($updateValues);
     }
     //
+
+    
+    //-------------------------------------------PRIVATE FUNCTIONS
+    public function filter()
+    {
+        return $this->filter = [
+            'id' => request()->id,
+            'first_name' => request()->first_name,
+            'last_name' => request()->last_name,
+            'email_address' => request()->email_address,
+            'password' => request()->password,
+            'primary_phone_number' => request()->primary_phone_number,
+            'secondary_phone_number' => request()->secondary_phone_number,
+            'state' => request()->state,
+            'city' => request()->city,
+            'area' => request()->area,
+            'address' => request()->address,
+            'pincode' => request()->pincode,
+            'gold_in_vault' => request()->gold_in_vault,
+            'prime_user' => request()->prime_user,
+            'blacklist' => request()->blacklist,
+            'ip_address' => request()->ip_address,
+        ];
+    }
 }

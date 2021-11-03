@@ -10,8 +10,16 @@ use App\Models\GoldOnEmiSchemeModel;
 
 class GoldOnEmiSchemeRepository implements BaseRepositoryInterface
 {
+    private $filter;
+    
+    public function __construct()
+    {
+        $this->filter($this->filter);
+    }
+
     public function fetch($pagination=0, $filter=[])
     {
+        $filter = $this->filter($filter);
         $dataSet = GoldOnEmiSchemeModel::when($filter['id'], function ($query) use ($filter) {
             $query->where('id', $filter['id']);
         })
@@ -32,9 +40,10 @@ class GoldOnEmiSchemeRepository implements BaseRepositoryInterface
         })
         ->orderBy('created_at', 'ASC');
         
-        if ($filter['id'] != null) {
+        if ($dataSet->count()==1) {
             return $dataSet->first();
         }
+        
         return $pagination != 0 ? $dataSet->paginate($pagination) : $dataSet->get();
     }
     //
@@ -59,4 +68,18 @@ class GoldOnEmiSchemeRepository implements BaseRepositoryInterface
         return GoldOnEmiSchemeModel::where('id', $id)->update($updateValues);
     }
     //
+
+    
+    //-------------------------------------------PRIVATE FUNCTIONS
+    public function filter($filter=[])
+    {
+        return $this->filter = [
+            'id' => !isset($filter['id']) ? request()->id : $filter['id'],
+            'scheme_name' => !isset($filter['scheme_name']) ? request()->scheme_name : $filter['scheme_name'],
+            'initial_amount_percent' => !isset($filter['initial_amount_percent']) ? request()->initial_amount_percent : $filter['initial_amount_percent'],
+            'interest_rate' => !isset($filter['interest_rate']) ? request()->interest_rate : $filter['interest_rate'],
+            'period' => !isset($filter['period']) ? request()->period : $filter['period'],
+            'cycle' => !isset($filter['cycle']) ? request()->cycle : $filter['cycle'],
+        ];
+    }
 }

@@ -63,6 +63,8 @@ class GoldOnEmiSchemeController extends Controller
         $this->filter = [
             'id' => request()->id,
             'scheme_name' => request()->scheme_name,
+            'initial_amount_percent' => request()->initial_amount_percent,
+            'interest_rate' => request()->interest_rate,
             'period' => request()->period,
             'cycle' => request()->cycle,
         ];

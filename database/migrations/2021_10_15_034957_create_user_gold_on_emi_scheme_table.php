@@ -20,10 +20,16 @@ class CreateUserGoldOnEmiSchemeTable extends Migration
             $table->uuid('scheme_id');
             $table->foreign('scheme_id')->references('id')->on('gold_on_emi_scheme');
             $table->string('scheme_name');
+            $table->integer('initial_amount_percent')->nullable();
+            $table->integer('initial_amount')->nullable();
+            $table->integer('interest_rate')->nullable();
+            $table->integer('interest_amount')->nullable();
+            $table->integer('emi_amount')->nullable();
             $table->enum('period', ['Daily', 'Weekly', 'Bi-Weekly', 'Monthly', 'Bi-Monthly', 'Quarterly', 'Half-Yearly', 'Yeary']);
             $table->integer('cycle');
             $table->string('gold_melting_type')->nullable();
-            $table->float('gold_rate', 8, 4);
+            $table->integer('gold_rate');
+            $table->float('gold_weight', 8, 4);
             $table->enum('emi_on_date', [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])->nullable();
             $table->softDeletes();
             $table->timestamps();

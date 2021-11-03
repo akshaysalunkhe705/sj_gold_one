@@ -14,5 +14,5 @@ class UserGoldOnEmiSchemeModel extends Model
     use UUIDTrait, HasFactory, SoftDeletes;
     
     protected $table = "user_gold_on_emi_scheme";
-    protected $fillable = ['user_id', 'scheme_name', 'period', 'cycle', 'gold_melting_type', 'gold_rate'];
+    protected $fillable = ['user_id', 'scheme_name', 'initial_amount_percent', 'initial_amount', 'interest_rate', 'interest_amount', 'emi_amount', 'period', 'cycle', 'gold_melting_type', 'gold_rate'];
 }

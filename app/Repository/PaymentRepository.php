@@ -11,8 +11,16 @@ use App\Models\PaymentModel;
 
 class PaymentRepository implements BaseRepositoryInterface
 {
+    private $filter;
+    
+    public function __construct()
+    {
+        $this->filter($this->filter);
+    }
+
     public function fetch($pagination=0, $filter=[])
     {
+        $filter = $this->filter($filter);
         $dataSet = PaymentModel::when($filter['id'], function ($query) use ($filter) {
             $query->where('id', $filter['id']);
         })
@@ -33,7 +41,7 @@ class PaymentRepository implements BaseRepositoryInterface
         })
         ->orderBy('created_at', 'ASC');
         
-        if ($filter['id'] != null) {
+        if ($dataSet->count()==1) {
             return $dataSet->first();
         }
         return $pagination != 0 ? $dataSet->paginate($pagination) : $dataSet->get();
@@ -60,4 +68,18 @@ class PaymentRepository implements BaseRepositoryInterface
         return PaymentModel::where('id', $id)->update($updateValues);
     }
     //
+
+    
+    //-------------------------------------------PRIVATE FUNCTIONS
+    public function filter()
+    {
+        return $this->filter = [
+            'id' => request()->id,
+            'scheme_name' => request()->scheme_name,
+            'initial_amount_percent' => request()->initial_amount_percent,
+            'interest_rate' => request()->interest_rate,
+            'period' => request()->period,
+            'cycle' => request()->cycle,
+        ];
+    }
 }

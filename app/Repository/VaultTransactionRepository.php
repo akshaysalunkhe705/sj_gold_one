@@ -11,8 +11,16 @@ use App\Models\VaultTransactionModel;
 
 class VaultTransactionRepository implements BaseRepositoryInterface
 {
+    private $filter;
+    
+    public function __construct()
+    {
+        $this->filter($this->filter);
+    }
+
     public function fetch($pagination=0, $filter=[])
     {
+        $filter = $this->filter($filter);
         $dataSet = VaultTransactionModel::when($filter['id'], function ($query) use ($filter) {
             $query->where('id', $filter['id']);
         })
@@ -33,7 +41,7 @@ class VaultTransactionRepository implements BaseRepositoryInterface
         })
         ->orderBy('created_at', 'ASC');
         
-        if ($filter['id'] != null) {
+        if ($dataSet->count()==1) {
             return $dataSet->first();
         }
         return $pagination != 0 ? $dataSet->paginate($pagination) : $dataSet->get();
@@ -60,4 +68,18 @@ class VaultTransactionRepository implements BaseRepositoryInterface
         return VaultTransactionModel::where('id', $id)->update($updateValues);
     }
     //
+
+    
+    //-------------------------------------------PRIVATE FUNCTIONS
+    public function filter()
+    {
+        return $this->filter = [
+            'id' => request()->id,
+            'user_id' => request()->user_id,
+            'weight' => request()->weight,
+            'gold_melting_type' => request()->gold_melting_type,
+            'gold_rate' => request()->gold_rate,
+            'purchase_date' => request()->purchase_date,
+        ];
+    }
 }

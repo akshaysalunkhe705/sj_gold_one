@@ -6,4 +6,5 @@ interface BaseRepositoryInterface{
     public function add($request);
     public function edit($id, $updateValues, $request);
     public function remove($condition);
+    // public function filter();
 }

@@ -24,8 +24,8 @@ Route::group(['prefix'=>'setting'], function () {
 
 Route::group(['prefix'=>'gold_scheme'], function () {
     Route::get('/get_gold_on_emi_scheme', [GoldOnEmiScehemeController::class,'fetch']);
-    Route::get('/get_user_gold_scheme', [UserGoldOnEmiScehemeController::class,'fetch']);
-    Route::post('/save_user_gold_scheme', [UserGoldOnEmiScehemeController::class,'save']);
+    Route::get('/get_user_gold_on_emi_scheme', [UserGoldOnEmiScehemeController::class,'get_user_gold_on_emi_scheme']);
+    Route::post('/save_user_gold_on_emi_scheme', [UserGoldOnEmiScehemeController::class,'save_user_gold_on_emi_scheme']);
 });
 
 Route::group(['prefix'=>'buy_gold'], function () {
